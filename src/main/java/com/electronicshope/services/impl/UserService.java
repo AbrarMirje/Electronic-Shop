@@ -6,7 +6,6 @@ import com.electronicshope.entities.User;
 import com.electronicshope.exceptions.ResourceNotFoundException;
 import com.electronicshope.repositories.UserRepository;
 import com.electronicshope.services.IUserService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -167,12 +166,15 @@ public class UserService implements IUserService {
         return entityToDto(byEmail);
     }
 
+
     @Override
     public List<UserDto> searchUser(String keyword) {
-        List<User> byNameContaining = userRepository.findByNameContaining(keyword);
-        return byNameContaining.stream()
-//                .map((user) -> entityToDto(user))
+        List<User> users = userRepository.findByNameContaining(keyword);
+        List<UserDto> userDtos = users.stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
+        return userDtos;
     }
+
+
 }
